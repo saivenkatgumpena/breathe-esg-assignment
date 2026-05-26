@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: breathe-esg-assignment-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py seed_data
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings_production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: breathe-esg-assignment-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: breathe-esg-assignment-backend.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://breathe-esg-assignment.vercel.app
+
+databases:
+  - name: breathe-esg-assignment-db
+    databaseName: breathe_esg
+    user: breathe_esg_user
+    plan: free
