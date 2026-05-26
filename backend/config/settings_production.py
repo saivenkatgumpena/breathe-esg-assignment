@@ -27,6 +27,9 @@ CORS_ALLOWED_ORIGINS = config(
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
+# Ensure auto-generated primary keys are BigInt
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # Database — Render provides DATABASE_URL automatically
 DATABASES = {
     'default': dj_database_url.config(
@@ -52,7 +55,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# WhiteNoise static file storage (Django 4.2+ uses STORAGES; keeping both for compat)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+}
 
 # Logging
 LOGGING = {
