@@ -1,0 +1,6 @@
+Meter_ID,Consumption_kWh,Billing_Start,Billing_End,Tariff
+M001,1500,2026-04-01,2026-04-30,Industrial
+M002,65000,2026-04-01,2026-04-30,Commercial
+M003,2400,2026-04-01,2026-06-01,Industrial
+M004,-100,2026-04-01,2026-04-30,Industrial
+M005,100,2026-04-30,2026-04-01,Industrial

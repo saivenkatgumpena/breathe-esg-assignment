@@ -1,0 +1,37 @@
+[
+  {
+    "employee": "Sai",
+    "type": "flight",
+    "from": "HYD",
+    "to": "DEL",
+    "quantity": 1,
+    "unit": "trip",
+    "date": "2026-05-01"
+  },
+  {
+    "employee": "Nihar",
+    "type": "flight",
+    "from": "BOM",
+    "to": "BOM",
+    "quantity": 1,
+    "unit": "trip",
+    "date": "2026-05-02"
+  },
+  {
+    "employee": "Venkat",
+    "type": "taxi",
+    "from": "Office",
+    "to": "Airport",
+    "quantity": 15,
+    "unit": "km",
+    "date": "2026-05-03"
+  },
+  {
+    "employee": "Rahul",
+    "type": "",
+    "from": "HYD",
+    "to": "BLR",
+    "quantity": 1,
+    "date": "2026-05-04"
+  }
+]

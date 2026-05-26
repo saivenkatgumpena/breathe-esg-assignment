@@ -1,0 +1,7 @@
+PlantCode,Material,Fuel_Type,Quantity,Unit,Date
+PL001,Generator Diesel,Diesel,500,L,2026-05-01
+PL002,Steel Rebar,,8,Ton,2026-05-03
+PL001,Coal Purchase,Coal,2,Ton,2026-05-03
+PL003,Motor Gasoline,Petrol,120,L,2026-05-05
+PL001,High Quantity Diesel,Diesel,12000,L,2026-05-06
+PL002,Raw Concrete,Procurement,-2,Ton,2026-05-07
