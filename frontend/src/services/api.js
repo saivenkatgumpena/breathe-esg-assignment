@@ -122,8 +122,16 @@ export const recordsService = {
     const response = await api.get('/records/', { params: filters });
     return response.data;
   },
+  createRecord: async (data) => {
+    const response = await api.post('/records/', data);
+    return response.data;
+  },
   updateRecord: async (id, data) => {
     const response = await api.put(`/records/${id}/`, data);
+    return response.data;
+  },
+  deleteRecord: async (id) => {
+    const response = await api.delete(`/records/${id}/`);
     return response.data;
   },
   approveRecord: async (id) => {

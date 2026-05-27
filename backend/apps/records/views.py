@@ -13,6 +13,17 @@ class ESGRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = ESGRecordSerializer
 
+    def perform_create(self, serializer):
+        company = self.get_company()
+        from apps.records.models import DataSource
+        source, _ = DataSource.objects.get_or_create(
+            company=company,
+            source_type='SAP',
+            file_name='Manual Entry',
+            defaults={'uploaded_by': self.request.user}
+        )
+        serializer.save(company=company, source=source)
+
     def get_company(self):
         try:
             return self.request.user.profile.company
