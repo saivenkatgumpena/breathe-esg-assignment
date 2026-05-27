@@ -119,12 +119,17 @@ cd backend
 ..\venv\Scripts\python manage.py test --verbosity=2
 ```
 
-**5 tests, all passing:**
-- `test_parse_date` — date format normalization (4 formats)
-- `test_normalize_quantity_and_unit` — unit conversion logic
-- `test_process_sap_csv` — SAP ingestion pipeline
-- `test_process_utility_csv` — Utility ingestion pipeline
-- `test_process_travel_json` — Travel ingestion pipeline
+**8 tests, all passing:**
+* **Ingestion Services** (`IngestionServicesTestCase`):
+  - `test_parse_date` — date format normalization (4 formats)
+  - `test_normalize_quantity_and_unit` — unit conversion logic
+  - `test_process_sap_csv` — SAP ingestion pipeline
+  - `test_process_utility_csv` — Utility ingestion pipeline
+  - `test_process_travel_json` — Travel ingestion pipeline
+* **User Registration** (`UserRegistrationTestCase`):
+  - `test_register_user_success` — user signup endpoint success flow
+  - `test_register_user_duplicate_username` — user signup validation error flow
+  - `test_register_user_missing_fields` — user signup missing params check
 
 ---
 
