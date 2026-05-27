@@ -63,6 +63,14 @@ export const authService = {
     }
     return response.data;
   },
+  register: async (username, password, email = '') => {
+    const response = await axios.post(`${API_BASE_URL}/auth/register/`, {
+      username,
+      password,
+      email,
+    });
+    return response.data;
+  },
   logout: () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');

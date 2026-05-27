@@ -22,6 +22,7 @@ from rest_framework.routers import DefaultRouter
 from apps.ingestion.views import SAPUploadView, UtilityUploadView, TravelUploadView
 from apps.records.views import ESGRecordViewSet
 from apps.audit.views import AuditLogViewSet
+from apps.companies.views import register_user
 
 router = DefaultRouter()
 router.register(r'records', ESGRecordViewSet, basename='record')
@@ -33,6 +34,7 @@ urlpatterns = [
     # Authentication APIs
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/register/', register_user, name='register_user'),
     
     # Ingestion / Upload APIs
     path('api/upload/sap/', SAPUploadView.as_view(), name='upload_sap'),

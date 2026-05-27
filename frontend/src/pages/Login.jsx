@@ -8,6 +8,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,12 +19,24 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMessage('');
     setLoading(true);
     try {
-      await authService.login(username, password);
-      navigate('/dashboard');
-    } catch {
-      setError('Invalid username or password.');
+      if (isSignUp) {
+        await authService.register(username, password);
+        setSuccessMessage('Account created successfully! You can now sign in.');
+        setIsSignUp(false);
+        setPassword('');
+      } else {
+        await authService.login(username, password);
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      if (isSignUp) {
+        setError(err.response?.data?.error || 'Registration failed. Please try again.');
+      } else {
+        setError('Invalid username or password.');
+      }
     } finally {
       setLoading(false);
     }
@@ -61,7 +75,19 @@ const Login = () => {
           background: '#161b27', border: '1px solid rgba(255,255,255,0.07)',
           borderRadius: '16px', padding: '28px',
         }}>
-          <h2 style={{ fontSize: '15px', fontWeight: 600, color: '#f0f4ff', margin: '0 0 20px' }}>Sign in to your account</h2>
+          <h2 style={{ fontSize: '15px', fontWeight: 600, color: '#f0f4ff', margin: '0 0 20px' }}>
+            {isSignUp ? 'Create a new account' : 'Sign in to your account'}
+          </h2>
+
+          {successMessage && (
+            <div style={{
+              background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)',
+              borderRadius: '8px', padding: '11px 14px', marginBottom: '18px',
+              fontSize: '13px', color: '#34d399',
+            }}>
+              {successMessage}
+            </div>
+          )}
 
           {error && (
             <div style={{
@@ -110,9 +136,37 @@ const Login = () => {
               className="btn-primary"
               style={{ width: '100%', justifyContent: 'center', padding: '11px', marginTop: '4px', fontSize: '14px' }}
             >
-              {loading ? <><span className="spinner" style={{ width: '14px', height: '14px', borderTopColor: '#fff' }} /> Signing in...</> : 'Sign In'}
+              {loading ? (
+                <>
+                  <span className="spinner" style={{ width: '14px', height: '14px', borderTopColor: '#fff' }} />{' '}
+                  {isSignUp ? 'Creating Account...' : 'Signing in...'}
+                </>
+              ) : (
+                isSignUp ? 'Create Account' : 'Sign In'
+              )}
             </button>
           </form>
+
+          {/* Toggle Link */}
+          <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '13px' }}>
+            <span style={{ color: '#7a8599' }}>
+              {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setError('');
+                setSuccessMessage('');
+              }}
+              style={{
+                background: 'none', border: 'none', color: '#34d399', fontWeight: 600,
+                cursor: 'pointer', padding: 0, fontSize: '13px',
+              }}
+            >
+              {isSignUp ? 'Sign In' : 'Sign Up'}
+            </button>
+          </div>
 
           {/* Credentials hint */}
           <div style={{
