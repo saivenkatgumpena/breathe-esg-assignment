@@ -57,7 +57,7 @@ const MainLayout = ({ children }) => {
         {/* Logo */}
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px', padding: '4px 6px' }}>
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="Breathe ESG"
             style={{ width: '32px', height: '32px', objectFit: 'contain', flexShrink: 0 }}
           />

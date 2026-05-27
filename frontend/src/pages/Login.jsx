@@ -43,7 +43,7 @@ const Login = () => {
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="Breathe ESG"
             style={{ width: '56px', height: '56px', objectFit: 'contain', margin: '0 auto 16px', display: 'block' }}
           />
