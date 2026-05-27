@@ -8,9 +8,9 @@ A full-stack ESG data ingestion, normalization, analyst review, and audit platfo
 
 | Service | URL |
 |---|---|
-| **Frontend** | https://breathe-esg.vercel.app |
-| **Backend API** | https://breathe-esg-backend.onrender.com/api |
-| **Django Admin** | https://breathe-esg-backend.onrender.com/admin |
+| **Frontend** | https://breathe-esg-assignment-mu.vercel.app/ |
+| **Backend API** | https://breathe-esg-backend-g66r.onrender.com/api |
+| **Django Admin** | https://breathe-esg-backend-g66r.onrender.com/admin |
 
 ### Demo Credentials
 ```

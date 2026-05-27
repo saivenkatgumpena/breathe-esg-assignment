@@ -13,6 +13,6 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: ALLOWED_HOSTS
-        value: breathe-esg-assignment-backend.onrender.com
+        value: breathe-esg-backend-g66r.onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://breathe-esg-assignment.vercel.app
+        value: https://breathe-esg-assignment-mu.vercel.app
