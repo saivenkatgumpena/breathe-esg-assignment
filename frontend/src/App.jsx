@@ -5,10 +5,9 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import Review from './pages/Review';
-import Analytics from './pages/Analytics';
 import Reports from './pages/Reports';
 import Profile from './pages/Profile';
-import { LayoutDashboard, Upload as UploadIcon, ClipboardCheck, BarChart2, FileText, User, LogOut } from 'lucide-react';
+import { LayoutDashboard, Upload as UploadIcon, ClipboardCheck, FileText, User, LogOut } from 'lucide-react';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -78,7 +77,6 @@ const MainLayout = ({ children }) => {
           <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
           <NavItem to="/upload"    icon={UploadIcon}      label="Ingestion Hub" />
           <NavItem to="/review"    icon={ClipboardCheck}  label="Analyst Review" />
-          <NavItem to="/analytics" icon={BarChart2}       label="Analytics & Insights" />
           <NavItem to="/reports"   icon={FileText}        label="Reports" />
           <NavItem to="/profile"   icon={User}            label="Profile" />
         </nav>
@@ -137,7 +135,6 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><MainLayout><Dashboard /></MainLayout></ProtectedRoute>} />
         <Route path="/upload"    element={<ProtectedRoute><MainLayout><Upload /></MainLayout></ProtectedRoute>} />
         <Route path="/review"    element={<ProtectedRoute><MainLayout><Review /></MainLayout></ProtectedRoute>} />
-        <Route path="/analytics" element={<ProtectedRoute><MainLayout><Analytics /></MainLayout></ProtectedRoute>} />
         <Route path="/reports"   element={<ProtectedRoute><MainLayout><Reports /></MainLayout></ProtectedRoute>} />
         <Route path="/profile"   element={<ProtectedRoute><MainLayout><Profile /></MainLayout></ProtectedRoute>} />
         <Route path="/"  element={<Navigate to="/dashboard" replace />} />
