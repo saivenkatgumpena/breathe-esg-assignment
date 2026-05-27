@@ -230,6 +230,129 @@ class Command(BaseCommand):
                 'activity_date': '2026-05-16',
                 'status': 'LOCKED',
                 'notes': 'Conference lodging expense'
+            },
+            # Additional SAP records
+            {
+                'source': sap_ds,
+                'category': 'Natural Gas',
+                'scope': 'Scope 1',
+                'quantity': 850.0000,
+                'normalized_unit': 'kg',
+                'activity_date': '2026-05-18',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': sap_ds,
+                'category': 'Heavy Fuel Oil',
+                'scope': 'Scope 1',
+                'quantity': 3200.0000,
+                'normalized_unit': 'litres',
+                'activity_date': '2026-05-20',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': sap_ds,
+                'category': 'Generator Diesel',
+                'scope': 'Scope 1',
+                'quantity': 680.0000,
+                'normalized_unit': 'litres',
+                'activity_date': '2026-05-22',
+                'status': 'APPROVED',
+                'notes': 'Off-grid standby power consumption'
+            },
+            {
+                'source': sap_ds,
+                'category': 'Procurement: Raw Aluminum',
+                'scope': 'Scope 3',
+                'quantity': 15000.0000,
+                'normalized_unit': 'kg',
+                'activity_date': '2026-05-18',
+                'status': 'APPROVED',
+                'notes': 'Annual metal framing procurement batch'
+            },
+            {
+                'source': sap_ds,
+                'category': 'Procurement: Copper Wire',
+                'scope': 'Scope 3',
+                'quantity': 2500.0000,
+                'normalized_unit': 'kg',
+                'activity_date': '2026-05-20',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            # Additional Utility records
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M004)',
+                'scope': 'Scope 2',
+                'quantity': 9500.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-05-18',
+                'status': 'APPROVED',
+                'notes': 'Data center sub-meter'
+            },
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M005)',
+                'scope': 'Scope 2',
+                'quantity': 450.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-05-20',
+                'status': 'FAILED',
+                'notes': 'Tariff code mismatch'
+            },
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M002)',
+                'scope': 'Scope 2',
+                'quantity': 2800.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-04-12',
+                'status': 'LOCKED',
+                'notes': 'Audited utility reporting'
+            },
+            # Additional Travel records
+            {
+                'source': travel_ds,
+                'category': 'Travel (flight) BLR -> HYD by Shivang',
+                'scope': 'Scope 3',
+                'quantity': 1.0000,
+                'normalized_unit': 'trip',
+                'activity_date': '2026-05-18',
+                'status': 'APPROVED',
+                'notes': 'Regional review presentation'
+            },
+            {
+                'source': travel_ds,
+                'category': 'Travel (taxi) Hotel -> Airport by Rahul',
+                'scope': 'Scope 3',
+                'quantity': 45.0000,
+                'normalized_unit': 'km',
+                'activity_date': '2026-05-20',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': travel_ds,
+                'category': 'Travel (flight) DEL -> JFK by Saurav',
+                'scope': 'Scope 3',
+                'quantity': 12000.0000,
+                'normalized_unit': 'km',
+                'activity_date': '2026-05-21',
+                'status': 'SUSPICIOUS',
+                'notes': 'Unusually high travel distance: 12000 km'
+            },
+            {
+                'source': travel_ds,
+                'category': 'Travel (hotel) Mumbai Stay by Rahul',
+                'scope': 'Scope 3',
+                'quantity': 5.0000,
+                'normalized_unit': 'trip',
+                'activity_date': '2026-05-22',
+                'status': 'APPROVED',
+                'notes': 'Onsite audit preparation'
             }
         ]
 
