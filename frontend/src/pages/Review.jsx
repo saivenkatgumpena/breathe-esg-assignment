@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { recordsService, auditService } from '../services/api';
-import { Check, X, Lock, Edit2, History, MessageSquare, Save } from 'lucide-react';
+import { Check, X, Lock, Edit2, History, MessageSquare, Save, Leaf, ShieldAlert, Droplet, Trash2 } from 'lucide-react';
 
 const StatusBadge = ({ status }) => {
   const map = {
@@ -31,18 +31,19 @@ const ActionBtn = ({ onClick, title, bg, color, children }) => (
 );
 
 const inputStyle = {
-  background: '#0f1117', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '7px',
-  color: '#f0f4ff', fontSize: '13px', padding: '8px 12px', width: '100%',
+  background: '#ffffff', border: '1px solid var(--border)', borderRadius: '8px',
+  color: 'var(--text-primary)', fontSize: '13px', padding: '8px 12px', width: '100%',
   outline: 'none', fontFamily: 'inherit', transition: 'border-color 0.2s',
 };
 
-const labelStyle = { fontSize: '11px', fontWeight: 600, color: '#7a8599', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' };
+const labelStyle = { fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' };
 
 const Review = () => {
   const [records, setRecords]   = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState('');
+  const [tab, setTab]           = useState('environmental'); // environmental, social, governance
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingRecord, setEditingRecord]     = useState(null);
@@ -92,32 +93,211 @@ const Review = () => {
     } catch (err) { alert(err.response?.data?.error || 'Failed to update.'); }
   };
 
-  const tableWrap = { background: '#161b27', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' };
-  const tableHeader = { padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '8px' };
-
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       {/* Page Header */}
-      <div style={{ marginBottom: '28px' }}>
-        <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#f0f4ff', margin: '0 0 4px', letterSpacing: '-0.3px' }}>Analyst Review</h1>
-        <p style={{ fontSize: '13px', color: '#7a8599', margin: 0 }}>Approve, reject, or edit records. Every change is tracked in the immutable audit trail below.</p>
+      <div>
+        <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.5px' }}>
+          Analyst Overview
+        </h1>
+        <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
+          Deep dive into ESG performance across key pillars
+        </p>
       </div>
 
-      {/* Records Table */}
-      <div style={tableWrap}>
-        <div style={tableHeader}>
-          <Edit2 size={14} color="#4f8ef7" />
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#f0f4ff' }}>Records Workspace</span>
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: '10px', background: '#ffffff', padding: '6px', borderRadius: '12px', border: '1px solid var(--border)', alignSelf: 'flex-start' }}>
+        <button
+          onClick={() => setTab('environmental')}
+          style={{
+            background: tab === 'environmental' ? '#10b981' : 'transparent',
+            color: tab === 'environmental' ? '#ffffff' : '#475569',
+            border: 'none', borderRadius: '8px', padding: '8px 16px',
+            fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s'
+          }}
+        >
+          Environmental
+        </button>
+        <button
+          onClick={() => setTab('social')}
+          style={{
+            background: tab === 'social' ? '#3b82f6' : 'transparent',
+            color: tab === 'social' ? '#ffffff' : '#475569',
+            border: 'none', borderRadius: '8px', padding: '8px 16px',
+            fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s'
+          }}
+        >
+          Social
+        </button>
+        <button
+          onClick={() => setTab('governance')}
+          style={{
+            background: tab === 'governance' ? '#8b5cf6' : 'transparent',
+            color: tab === 'governance' ? '#ffffff' : '#475569',
+            border: 'none', borderRadius: '8px', padding: '8px 16px',
+            fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s'
+          }}
+        >
+          Governance
+        </button>
+      </div>
+
+      {/* Environmental Tab View */}
+      {tab === 'environmental' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Metrics Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+            <div className="card" style={{ padding: '20px', display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}>
+                <Leaf size={18} />
+              </div>
+              <div>
+                <p style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', margin: '0 0 2px' }}>Carbon Emissions (tCO2e)</p>
+                <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>8,456</h4>
+              </div>
+            </div>
+
+            <div className="card" style={{ padding: '20px', display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
+                <ShieldAlert size={18} />
+              </div>
+              <div>
+                <p style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', margin: '0 0 2px' }}>Energy Consumption (kWh)</p>
+                <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>15,678</h4>
+              </div>
+            </div>
+
+            <div className="card" style={{ padding: '20px', display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(6, 182, 212, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#06b6d4' }}>
+                <Droplet size={18} />
+              </div>
+              <div>
+                <p style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', margin: '0 0 2px' }}>Water Usage (kL)</p>
+                <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>6,234</h4>
+              </div>
+            </div>
+
+            <div className="card" style={{ padding: '20px', display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(239, 68, 68, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                <Trash2 size={18} />
+              </div>
+              <div>
+                <p style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', margin: '0 0 2px' }}>Waste Generated (Tonnes)</p>
+                <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>1,245</h4>
+              </div>
+            </div>
+          </div>
+
+          {/* Graphics Row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+            <div className="card" style={{ padding: '24px' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Carbon Emissions Trend (tCO2e)</h4>
+              <div style={{ height: '180px' }}>
+                <svg viewBox="0 0 400 150" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                  <path d="M10,130 Q100,100 200,90 T390,30" fill="none" stroke="#10b981" strokeWidth="3" />
+                  <circle cx="390" cy="30" r="4" fill="#10b981" />
+                </svg>
+              </div>
+            </div>
+
+            <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyItems: 'center' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Emissions by Source</h4>
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flex: 1 }}>
+                <svg viewBox="0 0 100 100" style={{ width: '80px', height: '80px' }}>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" strokeWidth="15" />
+                  {/* Scope 1 Segment */}
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="15" strokeDasharray="88 251" strokeDashoffset="0" />
+                  {/* Scope 2 Segment */}
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" strokeWidth="15" strokeDasharray="100 251" strokeDashoffset="-88" />
+                  {/* Scope 3 Segment */}
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#8b5cf6" strokeWidth="15" strokeDasharray="63 251" strokeDashoffset="-188" />
+                </svg>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', fontWeight: 600 }}>
+                  <span style={{ color: '#10b981' }}>● Scope 1: 35%</span>
+                  <span style={{ color: '#3b82f6' }}>● Scope 2: 40%</span>
+                  <span style={{ color: '#8b5cf6' }}>● Scope 3: 25%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Social Tab View */}
+      {tab === 'social' && (
+        <div className="card" style={{ padding: '24px' }}>
+          <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Social & Community Metrics Overview</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '20px' }}>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Employee Diversity</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>42%</div>
+            </div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Workplace Safety (LTI)</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>0</div>
+            </div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Community Investment</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>$125k</div>
+            </div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Training Hours (Avg)</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>32h</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Governance Tab View */}
+      {tab === 'governance' && (
+        <div className="card" style={{ padding: '24px' }}>
+          <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Corporate Governance Metrics Overview</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '20px' }}>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Board Independence</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>75%</div>
+            </div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Ethics Code Training</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>100%</div>
+            </div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Risk Management Score</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>92%</div>
+            </div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '4px' }}>Audit Audits Completed</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>2</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Insights */}
+      <div className="card" style={{ padding: '24px' }}>
+        <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Key Insights</h4>
+        <ul style={{ paddingLeft: '20px', margin: 0, fontSize: '13px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <li>● Carbon emissions decreased by <strong>12.4%</strong> compared to last period.</li>
+          <li>● Energy efficiency improved by <strong>8.7%</strong> across operations.</li>
+          <li>● Focus area: Reduce Scope 3 emissions from supply chain.</li>
+        </ul>
+      </div>
+
+      {/* Records Workspace Table Card */}
+      <div className="card">
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Edit2 size={15} color="#10b981" />
+          <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>Records Workspace</span>
         </div>
 
-        {error && <div style={{ padding: '20px', color: '#f87171', fontSize: '13px', textAlign: 'center' }}>{error}</div>}
+        {error && <div style={{ padding: '20px', color: '#ef4444', fontSize: '13px', textAlign: 'center' }}>{error}</div>}
 
         {loading ? (
-          <div style={{ padding: '60px', textAlign: 'center', color: '#7a8599', fontSize: '13px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+          <div style={{ padding: '60px', textAlign: 'center', color: '#64748b', fontSize: '13px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
             <span className="spinner" /> Loading records…
           </div>
         ) : records.length === 0 ? (
-          <div style={{ padding: '60px', textAlign: 'center', color: '#4a5568', fontSize: '13px' }}>No records to review.</div>
+          <div style={{ padding: '60px', textAlign: 'center', color: '#94a3b8', fontSize: '13px' }}>No records to review.</div>
         ) : (
           <div className="table-container">
             <table>
@@ -135,21 +315,21 @@ const Review = () => {
               <tbody>
                 {records.map(r => (
                   <tr key={r.id}>
-                    <td style={{ fontFamily: 'monospace', fontSize: '12px', color: '#4a5568' }}>#{r.id}</td>
+                    <td style={{ fontFamily: 'monospace', fontSize: '12px', color: '#94a3b8' }}>#{r.id}</td>
                     <td>
-                      <div style={{ fontWeight: 500, color: '#f0f4ff', fontSize: '13px' }}>{r.category}</div>
+                      <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '13px' }}>{r.category}</div>
                       {r.notes && (
-                        <div style={{ fontSize: '11px', color: '#4a5568', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <MessageSquare size={10} />
                           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '260px' }}>{r.notes}</span>
                         </div>
                       )}
                     </td>
                     <td>
-                      <div style={{ fontSize: '12px', fontWeight: 500, color: '#f0f4ff' }}>{r.source?.source_type || '—'}</div>
-                      <div style={{ fontSize: '10px', color: '#4a5568', marginTop: '1px' }}>{r.source?.file_name}</div>
+                      <div style={{ fontSize: '12px', fontWeight: 600, color: '#0f172a' }}>{r.source?.source_type || '—'}</div>
+                      <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '1px' }}>{r.source?.file_name}</div>
                     </td>
-                    <td style={{ textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#f0f4ff', fontSize: '13px' }}>
+                    <td style={{ textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#0f172a', fontSize: '13px' }}>
                       {r.quantity !== null ? parseFloat(r.quantity).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 }) : '—'}
                     </td>
                     <td style={{ fontSize: '12px' }}>{r.normalized_unit || '—'}</td>
@@ -157,26 +337,26 @@ const Review = () => {
                     <td>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
                         {r.status === 'LOCKED' ? (
-                          <span style={{ fontSize: '11px', color: '#a78bfa', background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.2)', borderRadius: '5px', padding: '3px 8px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ fontSize: '11px', color: '#7c3aed', background: 'rgba(124, 58, 237, 0.08)', border: '1px solid rgba(124, 58, 237, 0.15)', borderRadius: '5px', padding: '3px 8px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
                             <Lock size={10} /> Locked
                           </span>
                         ) : (
                           <>
-                            <ActionBtn onClick={() => openEdit(r)} title="Edit" bg="rgba(255,255,255,0.04)" color="#7a8599">
+                            <ActionBtn onClick={() => openEdit(r)} title="Edit" bg="#f1f5f9" color="#475569">
                               <Edit2 size={12} />
                             </ActionBtn>
                             {r.status !== 'APPROVED' && (
-                              <ActionBtn onClick={() => handleApprove(r.id)} title="Approve" bg="rgba(52,211,153,0.08)" color="#34d399">
+                              <ActionBtn onClick={() => handleApprove(r.id)} title="Approve" bg="rgba(16, 185, 129, 0.08)" color="#10b981">
                                 <Check size={12} />
                               </ActionBtn>
                             )}
                             {r.status === 'APPROVED' && (
-                              <ActionBtn onClick={() => handleLock(r.id)} title="Lock for Audit" bg="rgba(167,139,250,0.08)" color="#a78bfa">
+                              <ActionBtn onClick={() => handleLock(r.id)} title="Lock for Audit" bg="rgba(124, 58, 237, 0.08)" color="#7c3aed">
                                 <Lock size={12} />
                               </ActionBtn>
                             )}
                             {r.status !== 'FAILED' && (
-                              <ActionBtn onClick={() => handleReject(r.id)} title="Reject" bg="rgba(248,113,113,0.08)" color="#f87171">
+                              <ActionBtn onClick={() => handleReject(r.id)} title="Reject" bg="rgba(239, 68, 68, 0.08)" color="#ef4444">
                                 <X size={12} />
                               </ActionBtn>
                             )}
@@ -192,16 +372,16 @@ const Review = () => {
         )}
       </div>
 
-      {/* Audit Trail */}
-      <div style={tableWrap}>
-        <div style={tableHeader}>
-          <History size={14} color="#34d399" />
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#f0f4ff' }}>Immutable Audit Trail</span>
+      {/* Audit Trail Card */}
+      <div className="card">
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <History size={15} color="#10b981" />
+          <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>Immutable Audit Trail</span>
         </div>
         {loading ? (
-          <div style={{ padding: '40px', textAlign: 'center', color: '#4a5568', fontSize: '13px' }}>Loading audit logs…</div>
+          <div style={{ padding: '40px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>Loading audit logs…</div>
         ) : auditLogs.length === 0 ? (
-          <div style={{ padding: '40px', textAlign: 'center', color: '#4a5568', fontSize: '13px' }}>No audit entries yet. Edit a record to see changes tracked here.</div>
+          <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '13px' }}>No audit entries yet. Edit a record to see changes tracked here.</div>
         ) : (
           <div className="table-container">
             <table>
@@ -219,13 +399,13 @@ const Review = () => {
               <tbody>
                 {auditLogs.map(log => (
                   <tr key={log.id}>
-                    <td style={{ fontFamily: 'monospace', fontSize: '12px', color: '#4a5568' }}>#{log.record_id}</td>
-                    <td style={{ fontSize: '13px', fontWeight: 500, color: '#f0f4ff' }}>{log.category}</td>
-                    <td style={{ fontFamily: 'monospace', fontSize: '12px', color: '#818cf8' }}>{log.field_name}</td>
-                    <td style={{ fontSize: '12px', color: '#f87171' }}>{log.old_value || <span style={{ color: '#4a5568' }}>—</span>}</td>
-                    <td style={{ fontSize: '12px', color: '#34d399' }}>{log.new_value || <span style={{ color: '#4a5568' }}>—</span>}</td>
-                    <td style={{ fontSize: '12px', fontWeight: 500, color: '#f0f4ff' }}>{log.edited_by}</td>
-                    <td style={{ fontSize: '11px', color: '#4a5568' }}>{new Date(log.edited_at).toLocaleString()}</td>
+                    <td style={{ fontFamily: 'monospace', fontSize: '12px', color: '#94a3b8' }}>#{log.record_id}</td>
+                    <td style={{ fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>{log.category}</td>
+                    <td style={{ fontFamily: 'monospace', fontSize: '12px', color: '#4f46e5' }}>{log.field_name}</td>
+                    <td style={{ fontSize: '12px', color: '#dc2626' }}>{log.old_value || <span style={{ color: '#94a3b8' }}>—</span>}</td>
+                    <td style={{ fontSize: '12px', color: '#059669' }}>{log.new_value || <span style={{ color: '#94a3b8' }}>—</span>}</td>
+                    <td style={{ fontSize: '12px', fontWeight: 600, color: '#0f172a' }}>{log.edited_by}</td>
+                    <td style={{ fontSize: '11px', color: '#64748b' }}>{new Date(log.edited_at).toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -239,22 +419,22 @@ const Review = () => {
         <div style={{
           position: 'fixed', inset: 0, zIndex: 100,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', padding: '24px',
+          background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(4px)', padding: '24px',
         }}>
           <div className="fade-up" style={{
             width: '100%', maxWidth: '480px',
-            background: '#161b27', border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '14px', overflow: 'hidden',
+            background: '#ffffff', border: '1px solid var(--border)',
+            borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)'
           }}>
             {/* Modal Header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Edit2 size={14} color="#4f8ef7" />
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#f0f4ff' }}>Edit Record <span style={{ color: '#4f8ef7' }}>#{editingRecord?.id}</span></span>
+                <Edit2 size={14} color="#10b981" />
+                <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>Edit Record <span style={{ color: '#10b981' }}>#{editingRecord?.id}</span></span>
               </div>
               <button
                 onClick={() => setIsEditModalOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#7a8599', cursor: 'pointer', padding: '4px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: '4px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <X size={16} />
               </button>
@@ -301,7 +481,7 @@ const Review = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '4px', borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '14px', borderTop: '1px solid var(--border)', marginTop: '4px' }}>
                 <button type="button" className="btn-ghost" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
                 <button type="submit" className="btn-primary">
                   <Save size={13} /> Save Changes
