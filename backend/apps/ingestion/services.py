@@ -2,6 +2,7 @@ import csv
 import json
 import decimal
 from datetime import datetime
+# pyrefly: ignore [missing-import]
 from apps.records.models import ESGRecord, UnitConversion
 
 def parse_date(date_str):
