@@ -228,36 +228,6 @@ const Review = () => {
               </div>
             </div>
           </div>
-
-          {/* Graphics Row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
-            <div className="card" style={{ padding: '24px' }}>
-              <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Carbon Emissions Trend (tCO2e)</h4>
-              <div style={{ height: '140px' }}>
-                <svg viewBox="0 0 400 120" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-                  <path d="M10,100 Q100,75 200,60 T390,20" fill="none" stroke="#10b981" strokeWidth="2.5" />
-                  <circle cx="390" cy="20" r="3.5" fill="#10b981" />
-                </svg>
-              </div>
-            </div>
-
-            <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyItems: 'center' }}>
-              <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 16px' }}>Emissions by Source</h4>
-              <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flex: 1 }}>
-                <svg viewBox="0 0 100 100" style={{ width: '70px', height: '70px' }}>
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#f1f5f9" strokeWidth="12" />
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="12" strokeDasharray="88 251" strokeDashoffset="0" />
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" strokeWidth="12" strokeDasharray="100 251" strokeDashoffset="-88" />
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#8b5cf6" strokeWidth="12" strokeDasharray="63 251" strokeDashoffset="-188" />
-                </svg>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '11px', fontWeight: 600 }}>
-                  <span style={{ color: '#10b981' }}>Scope 1: 35%</span>
-                  <span style={{ color: '#3b82f6' }}>Scope 2: 40%</span>
-                  <span style={{ color: '#8b5cf6' }}>Scope 3: 25%</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
@@ -311,15 +281,6 @@ const Review = () => {
         </div>
       )}
 
-      {/* Insights */}
-      <div className="card" style={{ padding: '20px' }}>
-        <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a', margin: '0 0 12px' }}>Key Insights</h4>
-        <ul style={{ paddingLeft: '16px', margin: 0, fontSize: '13px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <li>● Carbon emissions decreased by <strong>12.4%</strong> compared to last period.</li>
-          <li>● Energy efficiency improved by <strong>8.7%</strong> across operations.</li>
-          <li>● Focus area: Reduce Scope 3 emissions from supply chain.</li>
-        </ul>
-      </div>
 
       {/* Records Workspace Table Card */}
       <div className="card">

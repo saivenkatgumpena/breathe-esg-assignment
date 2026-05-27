@@ -1,8 +1,9 @@
 import os
+from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from apps.companies.models import Company, UserProfile
-from apps.records.models import UnitConversion
+from apps.records.models import DataSource, ESGRecord, UnitConversion
 
 class Command(BaseCommand):
     help = 'Seeds the database with default companies, users, and unit conversion rates.'
@@ -72,5 +73,196 @@ class Command(BaseCommand):
             )
             if uc_created:
                 self.stdout.write(f"Created unit conversion: {src} -> {dest} (*{mult})")
+
+        # 4. Seed default ESG Records
+        self.stdout.write("Checking/seeding default ESG records...")
+        
+        # Create default sources
+        sap_ds, _ = DataSource.objects.get_or_create(
+            company=company,
+            source_type='SAP',
+            file_name='default_sap_seed.csv',
+            defaults={'uploaded_by': user}
+        )
+        utility_ds, _ = DataSource.objects.get_or_create(
+            company=company,
+            source_type='UTILITY',
+            file_name='default_utility_seed.csv',
+            defaults={'uploaded_by': user}
+        )
+        travel_ds, _ = DataSource.objects.get_or_create(
+            company=company,
+            source_type='TRAVEL',
+            file_name='default_travel_seed.json',
+            defaults={'uploaded_by': user}
+        )
+
+        records_to_seed = [
+            # SAP
+            {
+                'source': sap_ds,
+                'category': 'Diesel',
+                'scope': 'Scope 1',
+                'quantity': 1500.0000,
+                'normalized_unit': 'litres',
+                'activity_date': '2026-05-10',
+                'status': 'APPROVED',
+                'notes': 'Verified monthly fuel invoice'
+            },
+            {
+                'source': sap_ds,
+                'category': 'Petrol',
+                'scope': 'Scope 1',
+                'quantity': 350.0000,
+                'normalized_unit': 'litres',
+                'activity_date': '2026-05-12',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': sap_ds,
+                'category': 'Procurement: Steel Rebar',
+                'scope': 'Scope 3',
+                'quantity': 5000.0000,
+                'normalized_unit': 'kg',
+                'activity_date': '2026-05-14',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': sap_ds,
+                'category': 'Procurement: Concrete',
+                'scope': 'Scope 3',
+                'quantity': 8500.0000,
+                'normalized_unit': 'kg',
+                'activity_date': '2026-05-15',
+                'status': 'SUSPICIOUS',
+                'notes': 'High bulk delivery volume'
+            },
+            {
+                'source': sap_ds,
+                'category': 'Coal',
+                'scope': 'Scope 1',
+                'quantity': 12000.0000,
+                'normalized_unit': 'kg',
+                'activity_date': '2026-05-16',
+                'status': 'LOCKED',
+                'notes': 'Locked for annual compliance reporting'
+            },
+            # Utility
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M001)',
+                'scope': 'Scope 2',
+                'quantity': 4500.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-05-10',
+                'status': 'APPROVED',
+                'notes': 'Corporate office meter'
+            },
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M002)',
+                'scope': 'Scope 2',
+                'quantity': 1200.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-05-12',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M003)',
+                'scope': 'Scope 2',
+                'quantity': 58000.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-05-15',
+                'status': 'SUSPICIOUS',
+                'notes': 'High consumption: 58000 kWh'
+            },
+            {
+                'source': utility_ds,
+                'category': 'Electricity (Meter: M001)',
+                'scope': 'Scope 2',
+                'quantity': 3200.0000,
+                'normalized_unit': 'kWh',
+                'activity_date': '2026-04-10',
+                'status': 'LOCKED',
+                'notes': 'Q1 electricity audit locked'
+            },
+            # Travel
+            {
+                'source': travel_ds,
+                'category': 'Travel (flight) HYD -> DEL by Sai',
+                'scope': 'Scope 3',
+                'quantity': 1.0000,
+                'normalized_unit': 'trip',
+                'activity_date': '2026-05-10',
+                'status': 'APPROVED',
+                'notes': 'Client onsite flight'
+            },
+            {
+                'source': travel_ds,
+                'category': 'Travel (taxi) Office -> Airport by Venkat',
+                'scope': 'Scope 3',
+                'quantity': 15.0000,
+                'normalized_unit': 'km',
+                'activity_date': '2026-05-12',
+                'status': 'PENDING',
+                'notes': ''
+            },
+            {
+                'source': travel_ds,
+                'category': "Travel (flight) BOM -> BOM by Nihar",
+                'scope': 'Scope 3',
+                'quantity': 1.0000,
+                'normalized_unit': 'trip',
+                'activity_date': '2026-05-14',
+                'status': 'SUSPICIOUS',
+                'notes': "Identical departure and destination: 'BOM'"
+            },
+            {
+                'source': travel_ds,
+                'category': 'Travel (hotel) Delhi Stay by Rahul',
+                'scope': 'Scope 3',
+                'quantity': 3.0000,
+                'normalized_unit': 'trip',
+                'activity_date': '2026-05-16',
+                'status': 'LOCKED',
+                'notes': 'Conference lodging expense'
+            }
+        ]
+
+        seeded_count = 0
+        for r in records_to_seed:
+            act_date = datetime.strptime(r['activity_date'], '%Y-%m-%d').date() if r['activity_date'] else None
+            exists = ESGRecord.objects.filter(
+                company=company,
+                category=r['category'],
+                scope=r['scope'],
+                quantity=r['quantity'],
+                normalized_unit=r['normalized_unit'],
+                activity_date=act_date
+            ).exists()
+
+            if not exists:
+                ESGRecord.objects.create(
+                    company=company,
+                    source=r['source'],
+                    category=r['category'],
+                    scope=r['scope'],
+                    quantity=r['quantity'],
+                    normalized_unit=r['normalized_unit'],
+                    activity_date=act_date,
+                    status=r['status'],
+                    notes=r['notes'],
+                    raw_data={'seeded': True}
+                )
+                seeded_count += 1
+
+        if seeded_count > 0:
+            self.stdout.write(self.style.SUCCESS(f"Seeded {seeded_count} new default ESG records successfully."))
+        else:
+            self.stdout.write("All default records already exist in the database.")
 
         self.stdout.write(self.style.SUCCESS("Database seeding completed successfully!"))
