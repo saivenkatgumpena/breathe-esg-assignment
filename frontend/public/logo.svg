@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#1fd96a"/>
+      <stop offset="100%" stop-color="#00bcd4"/>
+    </linearGradient>
+  </defs>
+
+  <g stroke="url(#g)" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10">
+    <!-- Left vertical bar -->
+    <line x1="15" y1="8" x2="15" y2="102" stroke-width="11"/>
+
+    <!-- Upper chevron (smaller) -->
+    <polyline points="15,8 53,8 72,28 51,48 15,48" stroke-width="11"/>
+
+    <!-- Lower chevron (larger, tip extends further right) -->
+    <polyline points="15,51 58,51 80,73 55,95 15,95" stroke-width="11"/>
+  </g>
+</svg>

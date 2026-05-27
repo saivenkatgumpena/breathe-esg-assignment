@@ -5,43 +5,38 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import Review from './pages/Review';
-import { 
-  Leaf, 
-  BarChart3, 
-  Upload as UploadIcon, 
-  ClipboardCheck, 
-  LogOut,
-  User,
-  ShieldCheck
-} from 'lucide-react';
+import { LayoutDashboard, Upload as UploadIcon, ClipboardCheck, LogOut, User } from 'lucide-react';
+import './App.css';
 
-// Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const isAuth = authService.isAuthenticated();
   return isAuth ? children : <Navigate to="/login" replace />;
 };
 
-// Sidebar Nav Item Helper
-const SidebarLink = ({ to, icon: Icon, children }) => {
+const NavItem = ({ to, icon: Icon, label }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
-
   return (
     <Link
       to={to}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 group ${
-        isActive 
-          ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold shadow-md shadow-emerald-500/5 glow-border-emerald' 
-          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent'
-      }`}
+      style={{
+        display: 'flex', alignItems: 'center', gap: '10px',
+        padding: '9px 12px', borderRadius: '8px', fontSize: '13px',
+        fontWeight: isActive ? 600 : 500, textDecoration: 'none',
+        color: isActive ? '#f0f4ff' : '#7a8599',
+        background: isActive ? 'rgba(47,108,240,0.12)' : 'transparent',
+        border: `1px solid ${isActive ? 'rgba(47,108,240,0.25)' : 'transparent'}`,
+        transition: 'all 0.15s',
+      }}
+      onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = '#f0f4ff'; }}}
+      onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#7a8599'; }}}
     >
-      <Icon className={`w-5 h-5 transition-transform group-hover:scale-105 ${isActive ? 'text-emerald-400' : 'text-slate-400 group-hover:text-slate-200'}`} />
-      <span>{children}</span>
+      <Icon size={16} style={{ color: isActive ? '#4f8ef7' : 'currentColor', flexShrink: 0 }} />
+      {label}
     </Link>
   );
 };
 
-// Main Layout Wrapper
 const MainLayout = ({ children }) => {
   const navigate = useNavigate();
   const username = authService.getCurrentUser() || 'analyst';
@@ -52,55 +47,72 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0B0F19]">
-      {/* Left Sidebar */}
-      <aside className="w-64 border-r border-slate-800/80 bg-slate-950/40 backdrop-blur-md flex flex-col justify-between p-6 shrink-0 sticky top-0 h-screen">
-        <div className="space-y-8">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-all">
-            <div className="w-9 h-9 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center shadow-md">
-              <Leaf className="w-5 h-5 text-emerald-400" />
-            </div>
-            <span className="text-lg font-bold tracking-tight text-white font-sans">
-              Breathe <span className="text-emerald-400">ESG</span>
-            </span>
-          </Link>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#0f1117' }}>
+      {/* Sidebar */}
+      <aside style={{
+        width: '220px', flexShrink: 0, position: 'sticky', top: 0, height: '100vh',
+        background: '#161b27', borderRight: '1px solid rgba(255,255,255,0.06)',
+        display: 'flex', flexDirection: 'column', padding: '20px 14px',
+      }}>
+        {/* Logo */}
+        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px', padding: '4px 6px' }}>
+          <img
+            src="/logo.svg"
+            alt="Breathe ESG"
+            style={{ width: '32px', height: '32px', objectFit: 'contain', flexShrink: 0 }}
+          />
+          <span style={{ fontSize: '15px', fontWeight: 700, color: '#f0f4ff', letterSpacing: '-0.3px' }}>
+            Breathe <span style={{ color: '#34d399' }}>ESG</span>
+          </span>
+        </Link>
 
-          {/* Links */}
-          <nav className="flex flex-col gap-2">
-            <SidebarLink to="/dashboard" icon={BarChart3}>Dashboard</SidebarLink>
-            <SidebarLink to="/upload" icon={UploadIcon}>Ingestion Hub</SidebarLink>
-            <SidebarLink to="/review" icon={ClipboardCheck}>Analyst Review</SidebarLink>
-          </nav>
+        {/* Section label */}
+        <div style={{ fontSize: '10px', fontWeight: 700, color: '#4a5568', letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0 6px', marginBottom: '8px' }}>
+          Navigation
         </div>
 
-        {/* Bottom User Info & Logout */}
-        <div className="space-y-4 pt-6 border-t border-slate-800/80">
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-9 h-9 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 border border-slate-700/50">
-              <User className="w-4 h-4" />
+        {/* Nav links */}
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '3px', flex: 1 }}>
+          <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
+          <NavItem to="/upload"    icon={UploadIcon}      label="Ingestion Hub" />
+          <NavItem to="/review"    icon={ClipboardCheck}  label="Analyst Review" />
+        </nav>
+
+        {/* User footer */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 8px' }}>
+            <div style={{
+              width: '30px', height: '30px', borderRadius: '50%', flexShrink: 0,
+              background: 'rgba(47,108,240,0.15)', border: '1px solid rgba(47,108,240,0.2)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <User size={14} color="#4f8ef7" />
             </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-white truncate m-0">{username}</p>
-              <p className="text-[10px] text-slate-500 font-medium truncate m-0">Breathe ESG Corp</p>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: '#f0f4ff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{username}</div>
+              <div style={{ fontSize: '11px', color: '#4a5568', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>ESG Analyst</div>
             </div>
           </div>
-
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/5 border border-transparent hover:border-red-500/10 transition-all font-medium text-xs focus:outline-none"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px', width: '100%',
+              padding: '8px 12px', borderRadius: '8px', border: '1px solid transparent',
+              background: 'transparent', color: '#7a8599', fontSize: '13px', fontWeight: 500,
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(248,113,113,0.08)'; e.currentTarget.style.color = '#f87171'; e.currentTarget.style.borderColor = 'rgba(248,113,113,0.15)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#7a8599'; e.currentTarget.style.borderColor = 'transparent'; }}
           >
-            <LogOut className="w-4.5 h-4.5" />
-            <span>Sign Out</span>
+            <LogOut size={14} />
+            Sign Out
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 min-w-0 overflow-y-auto px-8 py-8 relative">
-        {/* Glow backdrop decorative */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/[0.03] rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 max-w-6xl mx-auto">
+      {/* Main content */}
+      <main style={{ flex: 1, minWidth: 0, overflowY: 'auto', padding: '32px', background: '#0f1117' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }} className="fade-up">
           {children}
         </div>
       </main>
@@ -112,44 +124,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Route */}
         <Route path="/login" element={<Login />} />
-
-        {/* Protected Routes */}
-        <Route 
-          path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Dashboard />
-              </MainLayout>
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/upload" 
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Upload />
-              </MainLayout>
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/review" 
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Review />
-              </MainLayout>
-            </ProtectedRoute>
-          } 
-        />
-
-        {/* Catch-all redirects */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<ProtectedRoute><MainLayout><Dashboard /></MainLayout></ProtectedRoute>} />
+        <Route path="/upload"    element={<ProtectedRoute><MainLayout><Upload /></MainLayout></ProtectedRoute>} />
+        <Route path="/review"    element={<ProtectedRoute><MainLayout><Review /></MainLayout></ProtectedRoute>} />
+        <Route path="/"  element={<Navigate to="/dashboard" replace />} />
+        <Route path="*"  element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );

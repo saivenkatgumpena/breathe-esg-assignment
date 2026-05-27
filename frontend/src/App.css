@@ -1,1 +1,2 @@
-/* Empty to prevent styling conflicts. All styling is done in index.css using Tailwind. */
+/* App.css - minimal resets only, index.css handles everything */
+* { margin: 0; padding: 0; box-sizing: border-box; }
