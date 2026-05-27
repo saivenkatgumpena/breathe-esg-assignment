@@ -195,7 +195,7 @@ const Profile = () => {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
                 <span style={{ color: '#64748b' }}>Assigned Company</span>
-                <span style={{ fontWeight: 600, color: '#0f172a' }}>Demo Corp</span>
+                <span style={{ fontWeight: 600, color: '#0f172a' }}>Breathe ESG</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
                 <span style={{ color: '#64748b' }}>Security Clearance</span>
